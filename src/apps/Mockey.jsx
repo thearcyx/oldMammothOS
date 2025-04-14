@@ -341,8 +341,10 @@ const Mockey = ({ openPopup, closeWindow }) => {
 
   return (
     <div
+      draggable={false}
       className="flex w-full h-full relative"
-      style={{ backgroundImage: "url('assets/games/snake/snake.png')" }}
+      style={{ backgroundImage: "url('assets/games/snake/snake.png')", pointerEvents: 'none', userSelect: 'none' }}
+      onContextMenu={(e) => e.preventDefault()}
     >
       <div
         ref={gameRef}

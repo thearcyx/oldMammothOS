@@ -800,8 +800,10 @@ const Tetris = ({ openPopup, closeWindow }) => {
 
   return (
     <div
-      className="flex w-full h-full relative bg-cover select-none"
-      style={{ backgroundImage: "url('/assets/games/tetris/tetris.png')" }}
+      className="flex w-full h-full relative bg-cover"
+      draggable={false}
+      style={{ backgroundImage: "url('/assets/games/tetris/tetris.png')", pointerEvents: 'none', userSelect: 'none' }}
+      onContextMenu={(e) => e.preventDefault()}
     >
       <div
         ref={gameRef}

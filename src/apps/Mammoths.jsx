@@ -440,7 +440,9 @@ const Mammoths = ({ openPopup, closeWindow }) => {
   return (
     <div
       className="flex w-full h-full relative"
-      style={{ backgroundImage: "url('assets/games/mammoths/mammoths.png')" }}
+      draggable={false}
+      onContextMenu={(e) => e.preventDefault()}
+      style={{ backgroundImage: "url('assets/games/mammoths/mammoths.png')", pointerEvents: 'none', userSelect: 'none' }}
     >
       <div
         ref={gameRef}
