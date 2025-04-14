@@ -341,11 +341,9 @@ const Mockey = ({ openPopup, closeWindow }) => {
 
   return (
     <div
-      draggable={false}
       className="flex w-full h-full relative"
-      style={{ backgroundImage: "url('assets/games/snake/snake.png')", pointerEvents: 'none', userSelect: 'none' }}
-      onContextMenu={(e) => e.preventDefault()}
     >
+      <img className="absolute w-full h-full" src="assets/games/snake/snake.png" alt="" style={{ pointerEvents: 'none', userSelect: 'none' }} draggable={false} onContextMenu={(e) => e.preventDefault()} />
       <div
         ref={gameRef}
         className="aspect-square relative w-full h-full max-w-[630px] max-h-[500px] z-10 mx-auto"

@@ -440,10 +440,8 @@ const Mammoths = ({ openPopup, closeWindow }) => {
   return (
     <div
       className="flex w-full h-full relative"
-      draggable={false}
-      onContextMenu={(e) => e.preventDefault()}
-      style={{ backgroundImage: "url('assets/games/mammoths/mammoths.png')", pointerEvents: 'none', userSelect: 'none' }}
     >
+      <img className="absolute w-full h-full" src="assets/games/mammoths/mammoths.png" alt="" style={{ pointerEvents: 'none', userSelect: 'none' }} draggable={false} onContextMenu={(e) => e.preventDefault()} />
       <div
         ref={gameRef}
         className="aspect-square w-full h-full max-w-[480px] max-h-[480px] z-10 mx-auto my-auto"
@@ -451,7 +449,7 @@ const Mammoths = ({ openPopup, closeWindow }) => {
       {!hasStarted && (
         <div
           onClick={startGame}
-          className="cursor-pointer absolute flex w-full h-full z-10"
+          className="cursor-pointer absolute flex w-full h-full z-30"
         >
           <div className="bg-black absolute w-full h-full opacity-90"></div>
           <img
@@ -461,7 +459,7 @@ const Mammoths = ({ openPopup, closeWindow }) => {
           />
         </div>
       )}
-      <div className="w-[60px] -ml-[5px] sm:ml-[45px] mt-[30px] sm:mt-[75px] text-[18px] text-white flex flex-col gap-4">
+      <div className="w-[60px] -ml-[5px] sm:ml-[45px] mt-[30px] sm:mt-[75px] text-[18px] text-white flex flex-col gap-4 z-10">
         <p className="w-[40px] text-[30px] text-center font-bold">{score}</p>
       </div>
     </div>

@@ -366,6 +366,9 @@ const Tetris = ({ openPopup, closeWindow }) => {
       spawnTetrimino() {
         const tetriminos = ["j", "i", "l", "z", "s", "t", "o"];
 
+        this.elapsedDropTime = 0;
+        this.softDropTime = 0;
+
         if (!this.nextTetriminoType) {
           const randIndex = Math.floor(Math.random() * tetriminos.length);
           this.nextTetriminoType = tetriminos[randIndex];
@@ -406,6 +409,8 @@ const Tetris = ({ openPopup, closeWindow }) => {
 
       // Spawns a new Tetrimino at the custom location and updates the next piece preview
       spawnTetriminoAt(type, x, y, rotationState) {
+        this.elapsedDropTime = 0;
+        this.softDropTime = 0;
         this.currentTetrimino = this.physics.add.image(0, this.blockSize, type);
         this.currentTetrimino.setOrigin(0, 0);
         this.physics.world.enable(this.currentTetrimino);
@@ -679,8 +684,9 @@ const Tetris = ({ openPopup, closeWindow }) => {
       landTetrimino() {
         this.setTetriminoOnBoard(1);
         this.replaceTetriminoWithBlocks();
-        this.checkLines();
-        this.spawnTetrimino();
+        this.checkLines(() => {
+          this.spawnTetrimino(); // ✅ sadece animasyon bittiğinde spawn et
+        });
       }
 
       // Replaces Tetrimino sprites with fixed block images
@@ -704,9 +710,10 @@ const Tetris = ({ openPopup, closeWindow }) => {
       }
 
       // Checks for full lines and clears them if necessary
-      checkLines() {
+      checkLines(callback = () => {}) {
         let linesToRemove = [];
         let completedTweenCount = 0;
+      
         for (let i = 19; i >= 0; i--) {
           if (this.gameBoard[i].every((cell) => cell === 1)) {
             for (let j = 0; j < 10; j++) {
@@ -726,6 +733,7 @@ const Tetris = ({ openPopup, closeWindow }) => {
                     if (completedTweenCount === linesToRemove.length * 10) {
                       this.updateScoreAndLevel(linesToRemove);
                       this.shiftBlocks(linesToRemove);
+                      callback(); // ⬅️ Animasyon bittiğinde çağır
                     }
                   },
                 });
@@ -735,6 +743,11 @@ const Tetris = ({ openPopup, closeWindow }) => {
             this.gameBoard[i] = new Array(10).fill(0);
             linesToRemove.push(i);
           }
+        }
+      
+        // Eğer hiç temizlenen satır yoksa direkt callback
+        if (linesToRemove.length === 0) {
+          callback();
         }
       }
 
@@ -801,21 +814,19 @@ const Tetris = ({ openPopup, closeWindow }) => {
   return (
     <div
       className="flex w-full h-full relative bg-cover"
-      draggable={false}
-      style={{ backgroundImage: "url('/assets/games/tetris/tetris.png')", pointerEvents: 'none', userSelect: 'none' }}
-      onContextMenu={(e) => e.preventDefault()}
     >
+      <img className="absolute w-full h-full" src="/assets/games/tetris/tetris.png" alt="" style={{ pointerEvents: 'none', userSelect: 'none' }} draggable={false} onContextMenu={(e) => e.preventDefault()} />
       <div
         ref={gameRef}
         className="aspect-square relative w-full h-full max-w-[200px] max-h-[400px] z-10 mx-auto my-auto ml-[35px] sm:ml-[128px]"
       />
       {!hasStarted && (
-        <div onClick={startGame} className="cursor-pointer absolute flex w-full h-full z-10">
+        <div onClick={startGame} className="cursor-pointer absolute flex w-full h-full z-30">
           <div className="bg-black absolute w-full h-full opacity-90"></div>
           <img src="assets/p2s.gif" className="z-10 w-[350px] h-[200px] mx-auto mb-12 mt-auto" alt="" />
         </div>
       )}
-      <div className="w-[60px] mr-[10px] sm:mr-auto xl:-ml-[40px] 2xl:-ml-[25px] mt-[25px] sm:mt-[44px] text-[18px] text-white flex flex-col gap-4">
+      <div className="w-[60px] mr-[10px] sm:mr-auto xl:-ml-[40px] 2xl:-ml-[25px] mt-[25px] sm:mt-[44px] text-[18px] text-white flex flex-col gap-4 z-10">
         <img className="h-[40px] sm:h-[60px] w-[40px] sm:w-[60px]" src={nextTetriminoImage} alt="" />
         <p className="w-[40px] sm:ml-[11px] mt-[2px] sm:mt-[10px] text-[16px] sm:text-[24px] text-center font-bold">{level}</p>
         <p className="w-[40px] sm:ml-[11px] mt-[8px] sm:mt-[21px] text-[16px] sm:text-[24px] text-center font-bold">{score}</p>
