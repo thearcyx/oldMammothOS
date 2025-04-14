@@ -800,7 +800,7 @@ const Tetris = ({ openPopup, closeWindow }) => {
 
   return (
     <div
-      className="flex w-full h-full relative bg-cover"
+      className="flex w-full h-full relative bg-cover select-none"
       style={{ backgroundImage: "url('/assets/games/tetris/tetris.png')" }}
     >
       <div
@@ -813,7 +813,7 @@ const Tetris = ({ openPopup, closeWindow }) => {
           <img src="assets/p2s.gif" className="z-10 w-[350px] h-[200px] mx-auto mb-12 mt-auto" alt="" />
         </div>
       )}
-      <div className="w-[60px] mr-[10px] sm:mr-auto xl:-ml-[40px] 2xl:ml-[105px] mt-[25px] sm:mt-[44px] text-[18px] text-white flex flex-col gap-4">
+      <div className="w-[60px] mr-[10px] sm:mr-auto xl:-ml-[40px] 2xl:-ml-[25px] mt-[25px] sm:mt-[44px] text-[18px] text-white flex flex-col gap-4">
         <img className="h-[40px] sm:h-[60px] w-[40px] sm:w-[60px]" src={nextTetriminoImage} alt="" />
         <p className="w-[40px] sm:ml-[11px] mt-[2px] sm:mt-[10px] text-[16px] sm:text-[24px] text-center font-bold">{level}</p>
         <p className="w-[40px] sm:ml-[11px] mt-[8px] sm:mt-[21px] text-[16px] sm:text-[24px] text-center font-bold">{score}</p>
